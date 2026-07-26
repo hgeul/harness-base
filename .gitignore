@@ -1,0 +1,24 @@
+# harness-base 기본 .gitignore (BASE) — 이식 시 프로젝트로 복사되어 기본 규칙이 된다.
+# 프로젝트 스택별 ignore(node_modules 등)는 이 아래에 덧붙인다.
+
+# ── 내부 작업노트 보호 (핵심 규칙) ──────────────────────────────
+# docs/ 의 실제 내용(ADR·정책·회의·backlog)은 프로젝트 로컬 전용이다.
+# 공개/공유 remote 로 새면 무대 뒤(익명화 결정·내부 정황)가 노출된다.
+# 그래서 docs/ 는 기본 제외하고, 스켈레톤 템플릿(_TEMPLATE.md)만 공유한다.
+docs/**
+!docs/**/
+!docs/**/_TEMPLATE.md
+
+# ── 로컬 전용 / 민감: 절대 커밋 금지 ────────────────────────────
+*.local
+.claude/*.local
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# ── 빌드/의존성/OS (프로젝트가 자유롭게 확장) ───────────────────
+node_modules/
+dist/
+.DS_Store

@@ -20,7 +20,7 @@ AI 하네스 엔지니어링의 **재사용 가능한 BASE(엔진)**. 프로젝�
 
 ## 새 프로젝트에 까는 법 (이식 절차)
 
-1. 이 BASE 를 프로젝트 `.claude/` 등으로 복사 (또는 clone 후 `.git` 제거).
+1. 이 BASE 를 프로젝트 `.claude/` 등으로 복사 (또는 clone 후 `.git` 제거). **`.gitignore` 도 함께 복사**한다: `docs/`(템플릿 제외)·`*.local`·`.env` 를 기본 제외하므로, 프로젝트 스택 ignore(node_modules 등)는 그 아래에 덧붙인다. 이 `docs/` 제외 규칙은 내부 작업노트가 공개 remote 로 새는 걸 막으므로 지우지 말 것.
 2. `CLAUDE.template.md` → 프로젝트 루트 `CLAUDE.md` 로 두고 `<...>` placeholder 채우기.
 3. `.claude/hooks/pre-commit-check.sh` 상단 CONFIG 블록(채널·분류 토큰, 보호 브랜치) 수정.
 4. `.claude/rules/` 에 도메인 규칙 작성 (이 프로젝트의 "옳은 것"의 정의).

@@ -51,3 +51,5 @@
 - BASE 는 push 가능 (고객 자료 없음).
 - PROJECT overlay + `docs/` 는 고객 기밀. **개인/공용 remote 로 push 금지.**
 - 프로젝트 하네스 이력은 `hz.sh` 평행 git-dir(remote 없음)로 로컬에만.
+- **기계 강제 (관례 아님)**: BASE 의 `.gitignore` 가 `docs/` 를 기본 제외한다(스켈레톤 `_TEMPLATE.md` 만 공유). 그래서 실제 ADR·정책·backlog 는 프로젝트가 공개 repo 여도 커밋되지 않는다. 이식 시 이 규칙을 지우지 말 것. 프로젝트 스택 ignore 는 그 아래에 덧붙인다.
+  - 근거: docs/ 비공개가 문서 관례로만 있으면 새 프로젝트(특히 공개 GitHub Pages 블로그)에서 쉽게 유출된다. gitignore 로 못박아 기본값으로 만든다.
