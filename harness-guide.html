@@ -1,0 +1,742 @@
+<style>
+  :root {
+    --ground: #E7EAF0;
+    --surface: #FCFCFE;
+    --surface-2: #EEF1F7;
+    --ink: #161A22;
+    --ink-soft: #464D5A;
+    --ink-faint: #79808D;
+    --line: #D5DAE3;
+    --line-strong: #B7BFCD;
+    --brand: #35527C;
+    --brand-bright: #47679C;
+    --brand-wash: rgba(53, 82, 124, 0.07);
+    --pass: #2E7D5B;
+    --warn: #A96A16;
+    --fail: #B0403A;
+    --pass-wash: rgba(46, 125, 91, 0.10);
+    --warn-wash: rgba(169, 106, 22, 0.11);
+    --fail-wash: rgba(176, 64, 58, 0.10);
+    --shadow: 0 1px 2px rgba(20, 26, 38, 0.04), 0 8px 24px rgba(20, 26, 38, 0.06);
+    --shadow-sm: 0 1px 2px rgba(20, 26, 38, 0.05);
+    --radius: 10px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic",
+      "Apple SD Gothic Neo", "Noto Sans KR", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono",
+      "Consolas", "D2Coding", monospace;
+    --maxw: 720px;
+    --wide: 940px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0C0F15;
+      --surface: #141922;
+      --surface-2: #1A2029;
+      --ink: #E7EAF0;
+      --ink-soft: #A6AEBC;
+      --ink-faint: #6C7482;
+      --line: #262D39;
+      --line-strong: #353D4B;
+      --brand: #82A2D6;
+      --brand-bright: #9CB8E6;
+      --brand-wash: rgba(130, 162, 214, 0.10);
+      --pass: #59B48D;
+      --warn: #D69A4A;
+      --fail: #DA7A70;
+      --pass-wash: rgba(89, 180, 141, 0.12);
+      --warn-wash: rgba(214, 154, 74, 0.12);
+      --fail-wash: rgba(218, 122, 112, 0.12);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.35);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="light"] {
+    --ground: #E7EAF0; --surface: #FCFCFE; --surface-2: #EEF1F7;
+    --ink: #161A22; --ink-soft: #464D5A; --ink-faint: #79808D;
+    --line: #D5DAE3; --line-strong: #B7BFCD;
+    --brand: #35527C; --brand-bright: #47679C; --brand-wash: rgba(53,82,124,0.07);
+    --pass: #2E7D5B; --warn: #A96A16; --fail: #B0403A;
+    --pass-wash: rgba(46,125,91,0.10); --warn-wash: rgba(169,106,22,0.11); --fail-wash: rgba(176,64,58,0.10);
+    --shadow: 0 1px 2px rgba(20,26,38,0.04), 0 8px 24px rgba(20,26,38,0.06);
+    --shadow-sm: 0 1px 2px rgba(20,26,38,0.05);
+  }
+  :root[data-theme="dark"] {
+    --ground: #0C0F15; --surface: #141922; --surface-2: #1A2029;
+    --ink: #E7EAF0; --ink-soft: #A6AEBC; --ink-faint: #6C7482;
+    --line: #262D39; --line-strong: #353D4B;
+    --brand: #82A2D6; --brand-bright: #9CB8E6; --brand-wash: rgba(130,162,214,0.10);
+    --pass: #59B48D; --warn: #D69A4A; --fail: #DA7A70;
+    --pass-wash: rgba(89,180,141,0.12); --warn-wash: rgba(214,154,74,0.12); --fail-wash: rgba(218,122,112,0.12);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+  .wide { max-width: var(--wide); margin: 0 auto; padding: 0 22px; }
+
+  a { color: var(--brand); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: currentColor; }
+  :focus-visible { outline: 2px solid var(--brand-bright); outline-offset: 2px; border-radius: 3px; }
+
+  code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+  p code, li code, td code {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0.06em 0.4em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* ---- top bar ---- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--ground) 86%, transparent);
+    backdrop-filter: saturate(1.2) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: var(--wide); margin: 0 auto; padding: 10px 22px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .brandmark {
+    font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-soft); font-weight: 600;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .brandmark .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 3px var(--brand-wash); }
+  .topnav { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+  .topnav a {
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+    color: var(--ink-faint); padding: 4px 8px; border-radius: 6px; border-bottom: none;
+  }
+  .topnav a:hover { color: var(--ink); background: var(--surface-2); }
+  .theme-btn {
+    font-family: var(--font-mono); font-size: 11.5px; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--line); color: var(--ink-soft);
+    border-radius: 6px; padding: 4px 9px; letter-spacing: 0.04em;
+  }
+  .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+  @media (max-width: 640px) { .topnav { display: none; } }
+
+  /* ---- hero ---- */
+  .hero { padding: 78px 0 40px; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--brand); font-weight: 600;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 6.2vw, 3.15rem); line-height: 1.08; letter-spacing: -0.02em;
+    font-weight: 800; margin: 20px 0 0; text-wrap: balance;
+  }
+  .hero h1 .thin { color: var(--ink-soft); font-weight: 500; }
+  .lede {
+    font-size: 1.16rem; color: var(--ink-soft); margin: 22px 0 0; max-width: 40ch;
+    line-height: 1.62;
+  }
+  .hero-meta {
+    margin-top: 30px; display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .tag {
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.03em;
+    color: var(--ink-soft); background: var(--surface); border: 1px solid var(--line);
+    padding: 5px 10px; border-radius: 999px;
+  }
+  .tag b { color: var(--brand); font-weight: 700; }
+
+  /* ---- layer diagram ---- */
+  .layers { margin: 44px 0 8px; display: grid; gap: 12px; }
+  .layer {
+    position: relative; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 18px 20px 18px 22px; box-shadow: var(--shadow-sm);
+    display: grid; grid-template-columns: auto 1fr auto; gap: 4px 18px; align-items: center;
+  }
+  .layer::before {
+    content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px;
+    border-radius: 4px; background: var(--rail, var(--brand));
+  }
+  .layer .lnum { font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); letter-spacing: 0.08em; grid-row: 1; }
+  .layer .lname { font-weight: 700; font-size: 1.06rem; grid-row: 2; }
+  .layer .ldesc { grid-column: 2; grid-row: 3; color: var(--ink-soft); font-size: 0.95rem; margin-top: 2px; }
+  .layer .lwhen { grid-column: 1 / 2; grid-row: 1 / 3; }
+  .bypass {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.03em;
+    padding: 4px 9px; border-radius: 999px; white-space: nowrap; align-self: start;
+    grid-column: 3; grid-row: 1 / 4;
+  }
+  .bypass.soft { color: var(--warn); background: var(--warn-wash); border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent); }
+  .bypass.mid { color: var(--brand); background: var(--brand-wash); border: 1px solid color-mix(in srgb, var(--brand) 30%, transparent); }
+  .bypass.hard { color: var(--fail); background: var(--fail-wash); border: 1px solid color-mix(in srgb, var(--fail) 30%, transparent); }
+  @media (max-width: 560px) {
+    .layer { grid-template-columns: 1fr auto; }
+    .layer .ldesc { grid-column: 1 / -1; }
+    .bypass { grid-column: 2; grid-row: 1; }
+  }
+
+  /* ---- section ---- */
+  section { padding: 46px 0; border-top: 1px solid var(--line); }
+  section.nolinetop { border-top: none; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  .sec-num {
+    font-family: var(--font-mono); font-size: 13px; color: var(--brand);
+    font-weight: 700; letter-spacing: 0.05em; flex: none;
+  }
+  h2 { font-size: clamp(1.5rem, 3.6vw, 1.95rem); line-height: 1.18; letter-spacing: -0.015em; font-weight: 800; margin: 0; text-wrap: balance; }
+  h3 { font-size: 1.15rem; font-weight: 700; margin: 34px 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--ink-soft); font-size: 1.02rem; margin: 12px 0 0; }
+  p { margin: 16px 0; }
+  strong { font-weight: 700; }
+
+  .pull {
+    border-left: 3px solid var(--brand); padding: 4px 0 4px 18px; margin: 26px 0;
+    font-size: 1.12rem; color: var(--ink); font-weight: 500; line-height: 1.55;
+  }
+  .pull span { color: var(--ink-faint); font-size: 0.82rem; display: block; margin-top: 8px; font-weight: 400; letter-spacing: 0.02em; }
+
+  ul.clean { list-style: none; padding: 0; margin: 18px 0; display: grid; gap: 10px; }
+  ul.clean li { position: relative; padding-left: 22px; color: var(--ink-soft); }
+  ul.clean li::before {
+    content: ""; position: absolute; left: 3px; top: 0.62em; width: 7px; height: 7px;
+    border: 1.5px solid var(--brand); border-radius: 2px; transform: rotate(45deg);
+  }
+  ul.clean li b, ul.clean li strong { color: var(--ink); }
+
+  /* ---- debt cards ---- */
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 26px 0 6px; }
+  @media (max-width: 720px) { .grid3 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px 18px; box-shadow: var(--shadow-sm);
+  }
+  .card .k {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-faint); font-weight: 600;
+  }
+  .card h4 { font-size: 1.08rem; margin: 8px 0 8px; font-weight: 700; }
+  .card p { margin: 0; font-size: 0.94rem; color: var(--ink-soft); }
+  .card .fix {
+    margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line);
+    font-size: 0.86rem; color: var(--ink); display: flex; gap: 8px; align-items: baseline;
+  }
+  .card .fix .lab { font-family: var(--font-mono); font-size: 10.5px; color: var(--brand); letter-spacing: 0.06em; flex: none; text-transform: uppercase; }
+
+  /* ---- table ---- */
+  .table-scroll { overflow-x: auto; margin: 24px 0; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; background: var(--surface); min-width: 440px; }
+  th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--surface-2); font-weight: 700; color: var(--ink); font-size: 0.82rem; letter-spacing: 0.02em; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td .mono, th .mono { color: var(--brand); }
+  td.role { font-weight: 700; white-space: nowrap; }
+
+  /* ---- agent cards ---- */
+  .agents { display: grid; gap: 14px; margin: 26px 0 6px; }
+  .agent {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm); overflow: hidden;
+  }
+  .agent-top { display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+  .agent-cmd { font-family: var(--font-mono); font-weight: 700; font-size: 0.98rem; color: var(--brand); }
+  .agent-title { font-weight: 600; color: var(--ink-soft); font-size: 0.9rem; }
+  .agent-kind { margin-left: auto; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; }
+  .agent-body { padding: 16px 18px; display: grid; gap: 10px; }
+  .agent-row { display: grid; grid-template-columns: 84px 1fr; gap: 12px; font-size: 0.93rem; }
+  .agent-row .rk { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; text-transform: uppercase; padding-top: 2px; }
+  .agent-row .rv { color: var(--ink-soft); }
+  .agent-row .rv b { color: var(--ink); }
+  @media (max-width: 480px) { .agent-row { grid-template-columns: 1fr; gap: 2px; } }
+
+  /* ---- status chips ---- */
+  .chip { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 5px; white-space: nowrap; }
+  .chip.pass { color: var(--pass); background: var(--pass-wash); }
+  .chip.warn { color: var(--warn); background: var(--warn-wash); }
+  .chip.fail { color: var(--fail); background: var(--fail-wash); }
+
+  /* ---- tiers ---- */
+  .tiers { display: grid; gap: 0; margin: 24px 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: var(--shadow-sm); }
+  .tier { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 16px; align-items: center; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+  .tier:last-child { border-bottom: none; }
+  .tier .tn { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--brand); }
+  .tier .tt { font-weight: 700; }
+  .tier .td2 { grid-column: 2; color: var(--ink-soft); font-size: 0.92rem; margin-top: 2px; }
+  .tier .how { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  @media (max-width: 520px) { .tier { grid-template-columns: auto 1fr; } .tier .how { grid-column: 2; justify-self: start; margin-top: 6px; } .tier .td2 { grid-column: 1 / -1; } }
+
+  /* ---- workflow stepper ---- */
+  .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; margin: 26px 0 6px; }
+  .step {
+    flex: 1 1 120px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-sm); position: relative;
+  }
+  .step .sn { font-family: var(--font-mono); font-size: 11px; color: var(--brand); font-weight: 700; }
+  .step .st { font-weight: 700; margin-top: 4px; font-size: 0.98rem; }
+  .step .sd { font-size: 0.82rem; color: var(--ink-faint); margin-top: 3px; }
+  .step.gate { border-color: color-mix(in srgb, var(--brand) 45%, var(--line)); background: var(--brand-wash); }
+
+  /* ---- skill ladder ---- */
+  .ladder { display: grid; gap: 10px; margin: 26px 0 8px; }
+  .rung {
+    display: grid; grid-template-columns: auto 1fr; gap: 4px 18px; align-items: start;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px; box-shadow: var(--shadow-sm); position: relative;
+  }
+  .rung .lv { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--ink-faint); letter-spacing: 0.06em; padding-top: 2px; }
+  .rung .lt { font-weight: 700; }
+  .rung .ld { grid-column: 2; color: var(--ink-soft); font-size: 0.93rem; margin-top: 3px; }
+  .rung.here {
+    border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand), var(--shadow);
+    background: linear-gradient(180deg, var(--brand-wash), transparent);
+  }
+  .rung.here .lv { color: var(--brand); }
+  .rung .youare {
+    grid-column: 2; margin-top: 10px; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.06em; color: var(--brand); font-weight: 700; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .rung .youare::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--brand); }
+
+  .callout {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--brand);
+    border-radius: var(--radius); padding: 18px 20px; margin: 26px 0; box-shadow: var(--shadow-sm);
+  }
+  .callout .ct { font-weight: 700; margin-bottom: 6px; }
+  .callout p { margin: 6px 0 0; color: var(--ink-soft); font-size: 0.95rem; }
+
+  /* ---- ordered start list ---- */
+  ol.start { list-style: none; counter-reset: s; padding: 0; margin: 22px 0; display: grid; gap: 12px; }
+  ol.start li { counter-increment: s; position: relative; padding: 4px 0 4px 46px; color: var(--ink-soft); }
+  ol.start li::before {
+    content: counter(s); position: absolute; left: 0; top: 2px;
+    width: 30px; height: 30px; border-radius: 8px; background: var(--brand-wash);
+    border: 1px solid color-mix(in srgb, var(--brand) 30%, transparent); color: var(--brand);
+    font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+    display: grid; place-items: center;
+  }
+  ol.start li b { color: var(--ink); }
+
+  footer { border-top: 1px solid var(--line); padding: 40px 0 60px; color: var(--ink-faint); font-size: 0.86rem; }
+  footer .fnote { margin: 8px 0; }
+  footer a { color: var(--ink-soft); }
+  .disclaim { font-size: 0.82rem; color: var(--ink-faint); background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius); padding: 14px 16px; margin: 16px 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brandmark"><span class="dot"></span>AI&nbsp;HARNESS&nbsp;/&nbsp;GUARDRAILS</div>
+    <nav class="topnav">
+      <a href="#why">문제</a>
+      <a href="#defense">3층 방어</a>
+      <a href="#split">결정론·판단</a>
+      <a href="#agents">서브에이전트</a>
+      <a href="#ssot">SSOT·드리프트</a>
+      <a href="#base">BASE·오버레이</a>
+      <a href="#level">스킬 레벨</a>
+      <a href="#start">시작</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" aria-label="테마 전환">◐ theme</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">개인 AI 하네스 설계 노트</div>
+    <h1>생산은 AI가.<br><span class="thin">검증은 사람이. 그 경계를</span><br>시스템으로 못박는다.</h1>
+    <p class="lede">규율에 기대지 않는다. 실수가 프로덕션·공개 리포·외부 전송으로 새어 나가는 경계를, 매 턴 자동 규칙과 서브에이전트 검수와 우회 불가능한 커밋 게이트로 삼중 봉인한 개인 하네스의 전체 구조.</p>
+    <div class="hero-meta">
+      <span class="tag">대상: <b>AI 에이전트를 막 시작하는 개발자</b></span>
+      <span class="tag">도구: <b>Claude Code</b></span>
+      <span class="tag">핵심: <b>3층 방어 · 결정론/판단 분리 · SSOT</b></span>
+    </div>
+
+    <div class="layers reveal" aria-label="3층 방어 요약">
+      <div class="layer" style="--rail: var(--warn);">
+        <span class="lnum lwhen">LAYER 1</span>
+        <span class="lname">Rules: 매 턴 자동 주입</span>
+        <span class="ldesc"><code>CLAUDE.md</code> · <code>.claude/rules/*.md</code>. 코드를 짜기 전에 규칙을 상기시킨다.</span>
+        <span class="bypass soft">우회 가능 · 알림</span>
+      </div>
+      <div class="layer" style="--rail: var(--brand);">
+        <span class="lnum lwhen">LAYER 2</span>
+        <span class="lname">Validation: 완료 직전 검수</span>
+        <span class="ldesc"><code>/grill</code> · <code>/dod</code> · <code>/drift</code> 서브에이전트. 별도 컨텍스트로 캐묻고 검출한다.</span>
+        <span class="bypass mid">별도 검수 컨텍스트</span>
+      </div>
+      <div class="layer" style="--rail: var(--fail);">
+        <span class="lnum lwhen">LAYER 3</span>
+        <span class="lname">Enforcement: 커밋 게이트</span>
+        <span class="ldesc">pre-commit 훅 + <code>.gitignore</code>. 시크릿·개인정보·AI 트레일러를 기계가 차단.</span>
+        <span class="bypass hard">우회 불가</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="why" class="nolinetop">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>왜 하네스인가</h2></div>
+      <p class="sub">AI는 빠르게 생산한다. 그리고 그 속도로 실수도 경계를 넘는다. 잘못된 쿼리는 프로덕션으로, 익명화 안 된 원문은 공개 리포로, 시크릿은 커밋으로 나간다. 사람의 규율은 반년이면 무너진다.</p>
+
+      <p>그래서 이 하네스의 전제는 하나다. <strong>사람이 하는 일을 "생산"에서 "검증"으로 옮긴다.</strong> 생산은 AI에게 맡기고, 사람은 경계를 넘는 결과물만 판단한다. 그 판단마저 가능한 만큼 기계로 강제한다.</p>
+
+      <div class="pull">
+        "다 검증하려 하면 지친다. 경계를 넘는 결과물부터 철저히 본다. grep으로 끝날 일을 사람에게 시키지 않는다."
+        <span>검증 우선순위 원칙 (CLAUDE.md)</span>
+      </div>
+
+      <p>이 구조는 세 가지 부채를 각각 다른 장치로 관리한다. 부채를 하나의 "잘하자"로 뭉뚱그리지 않고, 종류별로 대응 기제를 분리한 것이 핵심이다.</p>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="k">Debt 01</div>
+          <h4>기술부채</h4>
+          <p>TODO·하드코딩·시크릿·규칙 위반이 생성 단계에서 쌓인다.</p>
+          <div class="fix"><span class="lab">기제</span><span>매 턴 자동 규칙(rules) + 커밋 게이트로 <b>생성 시점</b>에 차단</span></div>
+        </div>
+        <div class="card">
+          <div class="k">Debt 02</div>
+          <h4>인지부채</h4>
+          <p>전부 검증하려다 지쳐 정작 중요한 경계를 놓친다.</p>
+          <div class="fix"><span class="lab">기제</span><span>검증 <b>우선순위</b>로 경계 넘는 것부터. 나머지는 자동화에 위임</span></div>
+        </div>
+        <div class="card">
+          <div class="k">Debt 03</div>
+          <h4>의도부채</h4>
+          <p>"왜 이렇게 만들었나"가 휘발된다. 반년 뒤 나조차 모른다.</p>
+          <div class="fix"><span class="lab">기제</span><span>결정 기록(ADR)에 근거·가정·<b>만료 조건</b>까지 박제</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="defense">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2>3층 방어: 서로 다른 강도로 겹친다</h2></div>
+      <p class="sub">세 층은 "이거 아니면 저거"가 아니다. 한 작업의 생애 내내 동시에 작동하는 보완적 겹layer다. 위로 갈수록 우회가 어려워지고, 아래로 갈수록 자주 마주친다.</p>
+
+      <h3>Layer 1 · Rules: 알려주지만 막지는 않는다</h3>
+      <p><code>CLAUDE.md</code>와 <code>.claude/rules/*.md</code>가 매 턴 컨텍스트에 자동 주입된다. 파일을 수정하기 <em>전에</em> 규칙을 상기시켜 생성 단계에서 기술부채를 차단하는 것이 목적이다. 강제력은 없다. AI가 무시할 수도 있다. 그래서 아래 두 층이 받친다.</p>
+
+      <h3>Layer 2 · Validation: 별도 컨텍스트가 캐묻는다</h3>
+      <p>완료를 선언하기 직전, 세 개의 슬래시 커맨드가 서브에이전트를 띄운다. 메인 작업과 <strong>분리된 검수 컨텍스트</strong>라 스스로에게 관대해지지 않는다. 규칙 위반은 결정론적으로 검출하고(<code>/dod</code>), 설계 판단은 소크라테스식으로 캐묻고(<code>/grill</code>), 문서-코드 괴리는 스윕한다(<code>/drift</code>).</p>
+
+      <h3>Layer 3 · Enforcement: 기계가 거부한다</h3>
+      <p>가장 바깥. <code>pre-commit</code> 훅이 커밋 명령을 가로채 <strong>거부(exit 2)</strong>한다. 보호 브랜치 직접 커밋, AI 도구 언급·공동저자 트레일러, 커밋 메시지 형식 위반을 차단한다. 여기에 <code>.gitignore</code>가 개인정보·고객 자료를 애초에 스테이징 불가로 만든다. 사람의 의지가 개입할 여지가 없다.</p>
+
+      <div class="callout">
+        <div class="ct">핵심 설계 판단: 강도를 다르게 겹친 이유</div>
+        <p>모든 것을 훅으로 막으면 마찰이 과해 개발이 안 된다. 모든 것을 규칙으로만 두면 언젠가 샌다. 그래서 <strong>자주 필요하지만 유연해야 할 것은 Rules로, 드물지만 절대 새면 안 되는 것은 Enforcement로</strong> 배치한다. 마찰과 안전의 트레이드오프를 층별로 조정한 것이다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="split">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2>결정론과 판단을 분리한다</h2></div>
+      <p class="sub">검증에는 두 종류의 실패 양식이 있다. 기계가 정확히 잡는 것과, 사람만 알아볼 수 있는 것. 이 둘을 한 도구에 섞으면 기계가 판단을 흉내 내다 헛짚거나, 사람이 grep할 일을 손으로 한다.</p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>차원</th><th><span class="mono">/dod</span> · dod-checker</th><th><span class="mono">/grill</span> · design-grill</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="role">성격</td><td>결정론적 규칙 검출<br>(정규식 · 빌드 · 형식)</td><td>판단형 소크라테스 질문<br>(설계 의도 확인)</td></tr>
+            <tr><td class="role">산출</td><td><span class="chip pass">PASS</span> <span class="chip warn">WARN</span> <span class="chip fail">FAIL</span></td><td>질문 목록 (파일:라인 인용)</td></tr>
+            <tr><td class="role">자동 수정</td><td>안 함 (발견만 보고)</td><td>안 함 (점수화도 안 함)</td></tr>
+            <tr><td class="role">잡는 것</td><td>TODO · 시크릿 · AI 언급 · 커밋 형식 · 앵커 깨짐</td><td>"이 격리, 의식하고 뺀 건가?" 같은 <b>분기점</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>dod-checker는 위반을 잡는다. design-grill은 위반을 잡지 않는다. <strong>사용자가 의식적으로 결정했는지 확인할 분기점</strong>을 캐물을 뿐이다. "이미 의도했다" 하면 통과, "생각 못 했다" 하면 사용자가 보완한다. 추상적 일반론("격리 고려했나?")은 금지한다. 그건 dod가 기계로 잡을 몫이기 때문이다. grill은 <code>Foo.py:73</code>처럼 라인이 박힌 구체 질문만 던진다.</p>
+
+      <div class="pull">
+        "grep으로 끝날 일을 사람에게 시키지 않으려는 것이다. 반대로, 사람만 아는 판단을 기계의 PASS/FAIL로 위장하지도 않는다."
+      </div>
+    </div>
+  </section>
+
+  <section id="agents">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>세 개의 검수 서브에이전트</h2></div>
+      <p class="sub">각 커맨드는 전용 시스템 프롬프트를 가진 서브에이전트를 띄운다. 역할·스캔 범위·출력 형식·행동 원칙이 골격으로 고정돼 있고, 도메인 부분만 프로젝트가 채운다.</p>
+
+      <div class="agents">
+        <div class="agent">
+          <div class="agent-top">
+            <span class="agent-cmd">/dod</span>
+            <span class="agent-title">Definition of Done Checker</span>
+            <span class="agent-kind">결정론</span>
+          </div>
+          <div class="agent-body">
+            <div class="agent-row"><span class="rk">시점</span><span class="rv">완료 보고 직전 / PR 직전</span></div>
+            <div class="agent-row"><span class="rk">스캔</span><span class="rv">커밋된 변경 <b>+ 미커밋 + untracked</b> 합집합. "아직 add 안 했으니 대상 아님"을 허용하지 않는다.</span></div>
+            <div class="agent-row"><span class="rk">검출</span><span class="rv">금지 패턴 · AI 언급 · 커밋 형식 · 시크릿 하드코딩 · 빌드 · 문서 앵커 · 인수인계 기록(진행기록 필수 절 충족 여부). 각 항목 <span class="chip pass">PASS</span>/<span class="chip warn">WARN</span>/<span class="chip fail">FAIL</span>/<span class="mono">N/A</span></span></div>
+            <div class="agent-row"><span class="rk">원칙</span><span class="rv">추측 금지(실제 명령 실행 결과로만) · 자동 수정 금지 · 미도입 항목은 <b>N/A 명시</b>(false PASS 금지)</span></div>
+          </div>
+        </div>
+
+        <div class="agent">
+          <div class="agent-top">
+            <span class="agent-cmd">/grill</span>
+            <span class="agent-title">Design Grill (grill-with-docs)</span>
+            <span class="agent-kind">판단</span>
+          </div>
+          <div class="agent-body">
+            <div class="agent-row"><span class="rk">시점</span><span class="rv"><code>/dod</code> 직전, <b>필요할 때만</b>. 되돌리기 어렵거나 여러 작업에 영향을 주는 설계 판단이 있을 때. 매번 돌리면 ADR이 쌓이기만 하고 안 읽힌다</span></div>
+            <div class="agent-row"><span class="rk">역할</span><span class="rv">PR 직전 시니어 동료처럼 캐묻는다. 변경 없는 축은 섹션 자체를 생략. 빈 질문 금지.</span></div>
+            <div class="agent-row"><span class="rk">산출</span><span class="rv">파일:라인이 박힌 구체 질문. 답하면 <code>docs/decisions/</code> ADR로 <b>박제</b>(의도부채 차단)</span></div>
+            <div class="agent-row"><span class="rk">원칙</span><span class="rv">일반론 금지 · 점수화 금지 · 자동 수정 금지 · 왜 묻는지 근거 한 줄</span></div>
+          </div>
+        </div>
+
+        <div class="agent">
+          <div class="agent-top">
+            <span class="agent-cmd">/drift</span>
+            <span class="agent-title">Drift Detector (SSOT 일관성)</span>
+            <span class="agent-kind">3-Tier</span>
+          </div>
+          <div class="agent-body">
+            <div class="agent-row"><span class="rk">시점</span><span class="rv">정기(주 1회) / 큰 리팩토링 직후 / 새 팀원 합류 전</span></div>
+            <div class="agent-row"><span class="rk">전제</span><span class="rv"><b>코드가 진실.</b> 문서가 코드와 다르면 문서가 틀린 것. 새 SSOT를 만들지 않고 흩어진 진실의 모순만 드러낸다.</span></div>
+            <div class="agent-row"><span class="rk">범위</span><span class="rv"><code>ssot-index.md</code> 등록부 기준. 외부 도구가 marker 블록으로 관리하는 영역은 <span class="chip warn">INFO</span>만</span></div>
+            <div class="agent-row"><span class="rk">원칙</span><span class="rv">모든 DRIFT는 문서·코드 <b>양쪽 인용</b>. 추측이면 침묵. 자동 수정 금지.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ssot">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span><h2>SSOT와 드리프트: 문서는 코드보다 빨리 썩는다</h2></div>
+      <p class="sub">문서는 방치하면 거짓말이 된다. 그래서 "진실 원천 지도"(<code>ssot-index.md</code>)에 각 규칙이 실제 어디 사는지 매핑하고, 3단계로 괴리를 감지한다. 원칙은 하나다. 코드가 진실이고, 규칙 문서가 코드를 이기는 일은 없다.</p>
+
+      <div class="tiers">
+        <div class="tier">
+          <span class="tn">TIER 1</span>
+          <span class="tt">앵커 무결성</span>
+          <span class="how">결정론 · 스크립트</span>
+          <span class="td2">문서의 <code>File.ext:line</code> 앵커가 실제 파일·라인에 resolve되는가. 사라진 파일·범위 밖 라인 = 드리프트. <code>drift-anchors.sh</code>가 기계로 검사.</span>
+        </div>
+        <div class="tier">
+          <span class="tn">TIER 2</span>
+          <span class="tt">주장 ↔ 코드 모순</span>
+          <span class="how">LLM 판단</span>
+          <span class="td2">권위 문서의 주장("timeout 5초", "캐시는 메모리 only")을 코드·DB·외부 스펙과 대조. 명백한 모순만 DRIFT, 양쪽 라인 인용. 추측이면 침묵.</span>
+        </div>
+        <div class="tier">
+          <span class="tn">TIER 3</span>
+          <span class="tt">만료 · 신선도</span>
+          <span class="how">시간축</span>
+          <span class="td2">ADR의 "만료 조건"이 이미 충족됐는데 status가 채택이면 DRIFT(expired). 6개월 이상 방치된 정책 + 참조 코드 변경 = WARN(stale).</span>
+        </div>
+      </div>
+
+      <p>진실의 종류마다 기준이 다르다는 점이 정교하다. <strong>내부 동작의 진실은 코드, 외부 계약의 진실은 외부 스펙, 스키마의 진실은 DB·마이그레이션.</strong> 외부 API가 바뀌면 이번엔 코드를 의심한다. 진실 기준을 도메인별로 명시하지 않으면 "무엇에 맞춰 고칠지"가 매번 흔들린다.</p>
+    </div>
+  </section>
+
+  <section id="intent">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">06</span><h2>기록의 수명주기: 남은 일 · 한 일 · 왜 그랬나</h2></div>
+      <p class="sub">문서를 한 덩어리로 두면 전부 같이 썩는다. <b>지금 참인 것</b>(정본), <b>남은 것</b>(backlog), <b>실제로 한 것</b>(progress), <b>왜 그랬나</b>(ADR)를 각각 다른 파일에 두고 수명을 다르게 관리한다.</p>
+
+      <table>
+        <thead>
+          <tr><th>층</th><th>답하는 질문</th><th>현재 정본인가</th><th>완료 후</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>정본 · 규칙</td><td>지금 무엇이 참인가</td><td>예</td><td>현재 기준으로 갱신</td></tr>
+          <tr><td><span class="mono">docs/backlog/</span></td><td>결정됐지만 무엇이 남았는가</td><td>작업 상태만</td><td>항목을 지우고 progress로 연결</td></tr>
+          <tr><td><span class="mono">docs/progress/</span></td><td>실제로 무엇을 했는가</td><td>아니오, 당시 사실</td><td>시간순 보존</td></tr>
+          <tr><td><span class="mono">docs/decisions/</span></td><td>왜 그렇게 결정했는가</td><td>채택된 결정만</td><td>대체 ADR을 연결</td></tr>
+        </tbody>
+      </table>
+
+      <p>이 분리가 막는 실패는 셋이다. <b>backlog가 완료 로그로 변질되는 것</b>: 완료 항목은 쌓지 않고 즉시 지운다. <b>progress가 유사 정본으로 굳는 것</b>: 과거 기록과 정본이 충돌하면 정본을 따른다. <b>ADR 남발</b>: 되돌리기 어렵거나 여러 작업에 영향을 주는 결정에만 쓰고, 단순 실행 결과는 progress에 남긴다.</p>
+
+      <p>세션은 <span class="mono">CLAUDE.md → 진입 문서 → 최신 progress → backlog → 관련 정본</span> 순으로 열고, 닫을 때 결과·검증·다음 시작점을 progress에 남긴다. 진행기록 파일명은 <span class="mono">YYYY-MM-DD_작업명.md</span>로 이름순 정렬이 곧 시간순이 되게 한다. <code>/dod</code>의 <code>[O]</code> 항목이 필수 절이 실제로 채워졌는지 기계로 검사한다.</p>
+
+      <p><b>ADR에 적는 것</b> (<code>/grill</code> 문답이 그대로 <span class="mono">docs/decisions/&lt;브랜치&gt;.md</span>로 남는다. grill-with-docs)</p>
+
+      <ul class="clean">
+        <li><b>맥락:</b> 왜 지금 이 결정을 하는가 (트리거 · 관련 코드 · 관련 규칙)</li>
+        <li><b>결정과 근거:</b> 결정안 · 왜 · <b>버린 대안</b>까지 표로</li>
+        <li><b>기대는 가정 / 받아들인 위험:</b> 전제가 틀리면 결정이 깨진다</li>
+        <li><b>검증:</b> 이 결정을 build-time / run-time 무엇이 담보하나</li>
+        <li><b>만료 조건:</b> 코드 주석의 "잠정"이 영원히 남지 않도록 재검토 트리거를 박는다</li>
+        <li><b>문답 로그:</b> 질문(AI)/답(사람) 원문. 다음 세션이 Read로 재활용</li>
+      </ul>
+
+      <div class="pull">
+        "반년 뒤엔 과거의 내가 왜 그랬는지 나조차 모른다. 검증 레이어를 만들며 나온 암묵지를 ADR의 가정·만료 조건에 같이 적어, 의도부채를 동반 해결한다."
+      </div>
+    </div>
+  </section>
+
+  <section id="base">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">07</span><h2>BASE와 오버레이: 엔진과 도메인을 가른다</h2></div>
+      <p class="sub">하네스를 두 층으로 나눈다. BASE는 "만드는 방법"(절차·골격·엔진)이라 프로젝트 무관하게 그대로 이식한다. 오버레이는 "무엇이 옳은가"(도메인 판단)라 프로젝트마다 새로 쓴다. 이 분리 덕에 새 프로젝트에서 엔진을 다시 짜지 않는다.</p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>층</th><th>무엇</th><th>공유</th><th>예</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="role">BASE</td><td>워크플로 · 출력 형식 · 행동 원칙 · drift 엔진 · 커맨드 골격</td><td><span class="chip pass">push 가능</span></td><td><code>commands/</code>, 에이전트 골격, <code>drift-anchors.sh</code>, 훅 로직</td></tr>
+            <tr><td class="role">Overlay</td><td>도메인 규칙 · 검증 항목 · 질문 축 · SSOT 등록부</td><td><span class="chip fail">공유 금지</span></td><td><code>rules/*.md</code>, <code>ssot-index.md</code>, <code>docs/**</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>여기서 가장 실전적인 판단: <strong>경계를 관례가 아니라 기계로 강제한다.</strong> BASE의 <code>.gitignore</code>가 <code>docs/**</code>를 기본 제외하고 스켈레톤 <code>_TEMPLATE.md</code>만 공유한다. 그래서 프로젝트가 공개 GitHub Pages 블로그여도 내부 결정 기록·정책이 커밋되지 않는다. "docs 비공개"가 문서 관례로만 있으면 새 프로젝트에서 쉽게 유출되기 때문이다.</p>
+
+      <div class="callout">
+        <div class="ct">고객 자료가 섞인 프로젝트: 평행 git-dir</div>
+        <p>하네스 이력만 따로 버전 관리하되 절대 새 나가면 안 될 때는 <code>hz.sh</code>로 remote 없는 별도 git-dir을 쓴다. remote를 안 붙이면 <strong>push 자체가 불가능</strong>하니 영원히 로컬이다. 유출을 의지가 아니라 구조로 막는 같은 사고의 반복이다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">08</span><h2>한 장으로 보는 워크플로</h2></div>
+      <p class="sub">생산은 AI가, 검증과 판단은 사람이. 커밋 게이트가 마지막을 받친다.</p>
+
+      <div class="flow">
+        <div class="step"><div class="sn">01</div><div class="st">작업</div><div class="sd">AI가 생산</div></div>
+        <div class="step gate"><div class="sn">02</div><div class="st">/grill</div><div class="sd">필요 시. 되돌리기 어려운 설계만 → ADR</div></div>
+        <div class="step"><div class="sn">03</div><div class="st">보완</div><div class="sd">"생각 못 함" 항목 수정</div></div>
+        <div class="step"><div class="sn">04</div><div class="st">진행기록</div><div class="sd">결과·검증·미완료·다음 작업</div></div>
+        <div class="step gate"><div class="sn">05</div><div class="st">/dod</div><div class="sd">규칙 결정론 검수</div></div>
+        <div class="step gate"><div class="sn">06</div><div class="st">/drift</div><div class="sd">SSOT 괴리 점검</div></div>
+        <div class="step"><div class="sn">07</div><div class="st">커밋 · PR</div><div class="sd">훅 게이트 통과</div></div>
+      </div>
+      <p style="color:var(--ink-faint); font-size:0.86rem; margin-top:18px;">파란 칸이 검수 게이트다. <code>/grill</code>은 매번이 아니라 되돌리기 어렵거나 여러 작업에 영향을 주는 결정이 있을 때만 돈다(ADR 남발 방지). 04에서 진행기록을 먼저 갱신해야 <code>/dod</code>의 <code>[O]</code> 항목이 통과한다. <code>/drift</code>는 큰 변경 후·정기로 돈다. 마지막 커밋에서 훅이 시크릿·AI 트레일러·형식을 기계로 다시 한번 거른다.</p>
+    </div>
+  </section>
+
+  <section id="level">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">09</span><h2>이 세팅은 어느 레벨인가</h2></div>
+      <p class="sub">막 시작하는 사람이 자기 위치를 가늠할 수 있게 사다리로 그린다. 과장 없이, 대부분의 실무자가 실제로 어디쯤 있는지와 함께.</p>
+
+      <div class="ladder">
+        <div class="rung">
+          <span class="lv">L0</span>
+          <span class="lt">채팅으로 쓴다</span>
+          <span class="ld">에디터에 붙여넣고 답을 받는다. 프로젝트 컨텍스트를 매번 손으로 준다. 대부분 여기서 시작한다.</span>
+        </div>
+        <div class="rung">
+          <span class="lv">L1</span>
+          <span class="lt">CLAUDE.md를 쓴다</span>
+          <span class="ld">규칙과 스타일을 한 파일에 적어 매 턴 주입한다. 에이전트가 프로젝트를 "안다". 여기까지 오면 이미 상위권이다.</span>
+        </div>
+        <div class="rung">
+          <span class="lv">L2</span>
+          <span class="lt">커맨드·훅으로 자동화한다</span>
+          <span class="ld">슬래시 커맨드와 pre-commit 훅으로 반복 작업·금지 패턴을 기계화한다. 도구를 "설정"할 줄 안다.</span>
+        </div>
+        <div class="rung">
+          <span class="lv">L3</span>
+          <span class="lt">서브에이전트로 역할을 나눈다</span>
+          <span class="ld">검수·설계·드리프트를 전용 컨텍스트로 분리한다. 결정론과 판단을 다른 도구에 맡길 줄 안다.</span>
+        </div>
+        <div class="rung here">
+          <span class="lv">L4</span>
+          <span class="lt">거버넌스 엔진을 설계한다</span>
+          <span class="ld">3층 방어를 강도별로 겹치고, BASE/오버레이로 재사용 엔진을 뽑고, SSOT·드리프트로 문서 부패를 관리하고, 유출을 구조로 강제한다. "에이전트를 쓰는" 단계를 넘어 <b>에이전트가 도는 하네스 자체를 엔지니어링</b>한다.</span>
+          <span class="youare">이 세팅의 위치</span>
+        </div>
+      </div>
+
+      <h3>그래서 어떤 장점인가</h3>
+      <ul class="clean">
+        <li><b>방어 심도(defense-in-depth):</b> 한 층이 뚫려도 다음 층이 받는다. 단일 규칙에 안전을 걸지 않는다.</li>
+        <li><b>관심사 분리:</b> 기계가 할 검출(dod)과 사람이 할 판단(grill)과 시간이 만드는 부패(drift)를 각각 다른 도구가 맡는다.</li>
+        <li><b>재사용성:</b> 엔진(BASE)과 도메인(오버레이)이 갈려 있어 새 프로젝트에 골격을 그대로 이식한다. 매번 다시 짜지 않는다.</li>
+        <li><b>유출 방지의 구조화:</b> 개인정보·고객 자료·시크릿을 규율이 아니라 <code>.gitignore</code>·훅·remote 부재로 막는다.</li>
+        <li><b>자기 유지보수:</b> 안 잡히는 규칙은 지우고, 헛도는 검증은 은퇴시킨다. 하네스 자체를 부채로 보고 관리한다.</li>
+      </ul>
+
+      <div class="disclaim">
+        솔직한 눈금: L4는 "천재"라서 도달하는 곳이 아니라, <b>실수를 시스템 문제로 환원하는 습관</b>이 누적되면 닿는 곳이다. 화려함이 아니라 규율의 자동화다. 그리고 이 세팅도 "개인 생산성용이고, 지금도 계속 바뀐다". 정답이 아니라 한 사람의 진화 중인 골격으로 봐 주면 된다.
+      </div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">10</span><h2>막 시작한다면, 이 순서로</h2></div>
+      <p class="sub">한 번에 다 만들지 않는다. 위험이 큰 것부터 한 겹씩 올린다.</p>
+
+      <ol class="start">
+        <li><b>자동 주입 지침 파일 하나(<code>CLAUDE.md</code>)</b>를 만든다. 워크플로와 검증 우선순위만 적어도 절반은 온 것이다.</li>
+        <li><b>결정론 게이트 하나</b>를 붙인다. 시크릿·빌드·형식 중 제일 아픈 것 하나부터. pre-commit 훅이면 충분하다.</li>
+        <li><b>위험 프로젝트라면 gitignore와 민감어 목록을 먼저</b> 못박는다. 유출은 되돌릴 수 없으니 방어가 최우선이다.</li>
+        <li><b>진행기록 한 파일</b>을 만든다. 다음 세션이 재탐색 없이 이어갈 수 있게 결과·검증·다음 시작점만. 채팅 전문은 넣지 않는다. 이것만으로 컨텍스트 재구축 비용이 확 준다.</li>
+        <li><b>판단이 필요한 작업에서 결정 기록 습관</b>을 들인다. 결정만이 아니라 근거와 만료 조건을 같이. 단 되돌리기 어려운 결정에만. 전부 ADR로 만들면 아무도 안 읽는다.</li>
+        <li>그다음에 서브에이전트·SSOT·드리프트로 확장한다. <b>안 쓰는 규칙은 주기적으로 지운다.</b> 가드레일도 방치하면 부채가 된다.</li>
+      </ol>
+
+      <div class="callout">
+        <div class="ct">한 문장으로</div>
+        <p>검증 범위를 좁히고, 그 좁힌 제약을 기계화하고, 생산은 AI에게, 사람은 진짜 판단에만 집중한다. 나머지는 이 원칙의 반복 적용일 뿐이다.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fnote">이 문서는 개인 하네스(<span class="mono">harness-base</span> 재사용 골격)와 공개 글 <a href="https://hgeul.github.io/blog/ai-harness-guardrails/" target="_blank" rel="noopener">AI Harness Guardrails</a>를 정리한 것이다.</div>
+    <div class="fnote">도메인 규칙·고객 자료·내부 결정 기록은 이 문서에 포함하지 않았다. 방법론(엔진)만 공유한다.</div>
+    <div class="fnote" style="margin-top:16px; color:var(--ink-faint);">개인 생산성용 · 계속 변경됨 · 정답 아님</div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    function apply(t) { root.setAttribute('data-theme', t); btn.textContent = t === 'dark' ? '☀ light' : '☾ dark'; }
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    apply(mq.matches ? 'dark' : 'light');
+    btn.addEventListener('click', function () {
+      apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    }
+  })();
+</script>

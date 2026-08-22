@@ -2,18 +2,29 @@
 
 > 이 파일은 매 턴 자동 로드된다. (프로젝트 루트에 CLAUDE.md 로 둔다)
 > 절마다 [BASE] = 프로젝트 무관 골격(그대로 둠), [PROJECT] = 채워야 할 부분.
-> 이식 구조는 `.claude/HARNESS.md` 참고.
+> 이식 구조는 루트 `HARNESS.md` 참고.
+
+## 세션 시작 [BASE]
+
+1. 이 파일을 읽는다.
+2. `<PROJECT_CONTEXT_OR_ENTRY_DOC>`에서 현재 목표와 권위 문서를 확인한다.
+3. `docs/progress/`를 이름순 정렬해 마지막 파일(`YYYY-MM-DD_작업명.md`)의 `다음 작업`을 확인한다.
+4. `docs/backlog/작업목록.md`에서 수행할 항목을 고른다.
+5. 해당 작업에 필요한 정본·규칙만 추가로 읽는다.
+
+과거 progress는 당시 실행 사실이지 현재의 정본이 아니다. 충돌하면 SSOT 인덱스에 등록된 권위 원천을 따른다.
 
 ## 워크플로 [BASE]
 
 생산은 AI가 한다. 사람의 메인 작업은 검증과 판단이다.
 
 1. 작업
-2. `/grill`: 설계 캐묻기 + 답을 `docs/decisions/<브랜치>.md` 에 박제 (의도부채 방지)
+2. `/grill`(필요 시): 되돌리기 어렵거나 여러 작업에 영향을 주는 설계를 검토하고 ADR로 기록
 3. 보완
-4. `/dod`: 규칙 결정론 검수 (PASS/FAIL/WARN)
-5. `/drift`: SSOT 드리프트 점검 (정기 / 큰 변경 후)
-6. PR
+4. 진행기록: 실제 결과·검증·미완료·다음 작업 갱신
+5. `/dod`: 규칙 결정론 검수 (PASS/FAIL/WARN)
+6. `/drift`: SSOT 드리프트 점검 (정기 / 큰 변경 후)
+7. PR
 
 작업은 feature 브랜치에서 한다. 보호 브랜치 직접 커밋 금지(훅이 차단).
 `/grill`·`/dod` 는 `<BASE_BRANCH>` 대비 비교한다.
@@ -47,11 +58,25 @@
 
 "왜 이렇게 만들었나"가 코드 주석의 '잠정' 으로 떠다니지 않게 박제한다.
 
-- 이번 작업의 결정: `docs/decisions/<브랜치>.md` (ADR, 템플릿 `docs/decisions/_TEMPLATE.md`)
+- 결정됐지만 아직 끝나지 않은 일: `docs/backlog/` (템플릿 `docs/backlog/_TEMPLATE.md`)
+- 실제 수행 내용·결과·다음 시작점: `docs/progress/` (템플릿 `docs/progress/_TEMPLATE.md`)
+  - 파일명 `YYYY-MM-DD_작업명.md`. 날짜 접두사 필수, 작업명 한글 가능, **공백 금지**(하이픈).
+- 되돌리기 어렵거나 여러 작업에 영향을 주는 결정: `docs/decisions/<브랜치>.md` (ADR, 템플릿 `docs/decisions/_TEMPLATE.md`)
 - 도메인 정책·회색지대: `docs/policy/`
 - 기능 결정: `docs/feature/`
 - 외부 계약: `docs/reference/`
 
 검증 레이어를 만들며 나온 암묵지는 ADR 의 "가정·만료 조건"에 같이 적는다. 의도부채를 동반 해결한다.
+단순 실행 결과까지 ADR로 만들지 않는다. progress에서 결정의 요약과 ADR 링크만 남겨 역할 중복을 피한다.
 
 진실 원천 지도는 `.claude/ssot-index.md`. `/drift` 가 이걸 기준으로 코드와의 괴리를 점검한다.
+
+## 세션 종료 [BASE]
+
+1. 작업 결과와 실제 검증 근거를 progress에 기록한다.
+2. 중요한 선택이 있었다면 ADR을 작성하고 progress에서 연결한다.
+3. 완료 항목을 backlog에서 제거하고 새로 확정된 후속 작업을 반영한다.
+4. 현재 기준이 바뀐 경우에만 정본과 SSOT 인덱스를 갱신한다.
+5. 다음 작업을 선행 조건과 완료 기준까지 포함해 적는다.
+
+채팅 전문, 긴 명령 출력, 시크릿은 기록하지 않는다.

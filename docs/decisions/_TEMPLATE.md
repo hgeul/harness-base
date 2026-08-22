@@ -1,8 +1,10 @@
 # ADR: <결정 제목>
 
 > branch: `<브랜치>` | date: `<YYYY-MM-DD>` | status: 제안 | 채택 | 폐기 | 대체됨(→ 어떤 ADR)
+> related progress: `docs/progress/<YYYY-MM-DD_작업명>.md`
 >
 > 이 파일은 `/grill` 산출물이다 (grill-with-docs). "왜 이렇게 만들었나"(의도부채)를 박제한다.
+> 단순 실행 결과는 progress에 남긴다. 이 템플릿은 대안·가정·위험·재검토 조건이 필요한 결정에만 사용한다.
 
 ## 1. 맥락 (왜 지금 이 결정을 하나)
 

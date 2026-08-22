@@ -12,7 +12,8 @@
 #   5. 통과하면 체크리스트 출력 (soft reminder)
 
 # ── CONFIG [PROJECT] ──────────────────────────────────────────────
-PROTECTED_BRANCHES="master develop"        # 직접 커밋 금지 브랜치 (공백 구분)
+PROTECTED_BRANCHES="main master develop"   # 직접 커밋 금지 브랜치 (공백 구분)
+# 기본값에 main 을 포함한다. 빠뜨리면 훅이 경고 없이 통과시켜 게이트가 조용히 꺼진다.
 MSG_CHANNELS="관리자|멤버|공통"             # [채널] 토큰
 MSG_TYPES="추가|수정|삭제|테스트|문서"      # [분류] 토큰
 # 체크리스트 본문은 파일 하단 print_checklist() 에서 프로젝트에 맞게 수정.
@@ -72,10 +73,11 @@ commit_msg=$(extract_commit_msg "$command_str")
 if [ -n "$commit_msg" ]; then
   # ── 4a. AI 도구 / 공동저자 / 이모지 차단 (합법 참조는 정제 후 검사) ──
   msg_for_scan=$(echo "$commit_msg" \
-    | sed -E 's/CLAUDE\.md//gI' \
+    | sed -E 's/CLAUDE(\.[A-Za-z0-9_-]+)*\.md//gI' \
     | sed -E 's|\.claude/[A-Za-z0-9_./-]*||gI' \
     | sed -E 's/\.claude\b//gI')
-  if echo "$msg_for_scan" | grep -iE 'Co-Authored-By:|generated with|🤖|Claude|ChatGPT|Copilot' > /dev/null; then
+  # LC_ALL=C: UTF-8 로케일의 grep 이 BMP 밖 이모지를 매치하지 못해 차단이 조용히 죽는다.
+  if echo "$msg_for_scan" | LC_ALL=C grep -iE 'Co-Authored-By:|generated with|🤖|Claude|ChatGPT|Copilot' > /dev/null; then
     echo "[BLOCKED] 커밋 메시지에 AI 도구 언급 또는 공동저자 트레일러가 포함되어 있습니다."
     echo "  - AI 도구 언급 / Co-Authored-By / 이모지 제거 후 다시 커밋"
     exit 2
