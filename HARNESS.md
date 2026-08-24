@@ -44,6 +44,8 @@
 1. BASE 복사
 2. `CLAUDE.template.md` → `CLAUDE.md`, `<...>` placeholder 채우기
 3. 훅 CONFIG 블록 수정 (토큰·보호 브랜치)
+   - 전제: 훅은 JSON 파싱에 `jq` 또는 `python` 중 하나를 쓴다. 둘 다 없으면
+     통과시키지 않고 커밋을 **차단**한다(게이트가 조용히 죽는 것보다 낫다)
 4. `.claude/rules/` 도메인 규칙 작성
 5. `dod-checker` PROJECT 검증항목 / `design-grill` 질문 축 작성
 6. `docs/backlog/작업목록.md` 와 첫 `docs/progress/YYYY-MM-DD_작업명.md` 를 만들고 진입 문서에서 연결

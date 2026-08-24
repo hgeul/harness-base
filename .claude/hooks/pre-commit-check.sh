@@ -31,7 +31,19 @@ try:
 except Exception:
     pass' 2>/dev/null)
 fi
-[ -z "$command_str" ] && exit 0
+# ── 1b. 파싱 실패 시 fail-closed [BASE] ──
+# jq·python 이 둘 다 없으면 command 추출이 실패한다. 여기서 그냥 exit 0 하면
+# 훅이 붙어 있는데도 게이트가 조용히 죽고, 사용자는 도는 줄 안다(false PASS).
+# 입력이 커밋 명령처럼 보이면 통과시키지 않는다. 이 규칙을 열어두지 말 것.
+if [ -z "$command_str" ]; then
+  if printf '%s' "$input" | LC_ALL=C grep -qE 'git[[:space:]]+commit'; then
+    echo "[BLOCKED] 커밋 명령으로 보이나 훅 입력 파싱에 실패했습니다."
+    echo "  - jq 또는 python 이 PATH 에 있어야 이 게이트가 동작합니다."
+    echo "  - 둘 중 하나를 설치한 뒤 다시 커밋하세요."
+    exit 2
+  fi
+  exit 0
+fi
 
 # ── 2. git commit 호출 여부 (토큰 단위) ──
 if ! echo "$command_str" | grep -qE '(^|[[:space:]]|;|&&|\|\|)git[[:space:]]+commit([[:space:]]|$)'; then
