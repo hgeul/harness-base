@@ -15,5 +15,6 @@
 - [완료 정의](./reviews/dod.md)
 - [SSOT 드리프트](./reviews/drift.md)
 - [정책 감사](./reviews/policy-audit.md)
+- [커밋 메시지 규약](./commit-convention.md)
 
 실행 이름은 두 런타임에서 모두 `grill`, `dod`, `drift`, `policy-audit`다. Claude Code는 `/이름` 명령과 서브에이전트, Codex는 `$이름` Skill을 사용한다.

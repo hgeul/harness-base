@@ -20,6 +20,6 @@
 | F. 용어·링크 | 정본 용어·상대 링크·Markdown anchor 검사 |
 | G. 운영 기록 | 의미 있는 progress, 중요한 다중 문서 결정의 ADR |
 | H. 검증 | `git diff --check`와 관련 test/lint/type/schema |
-| I. 커밋 메시지 | 프로젝트 지정 언어. 제품·도구명, 코드 식별자, CLI는 원문 유지 |
+| I. 커밋 메시지 | `harness/commit-convention.md` 형식. 프로젝트 지정 언어, 제품·도구명, 코드 식별자, CLI는 원문 유지 |
 
 `PROJECT` 검증은 도메인 규칙마다 결정론적 검출 명령과 PASS/FAIL/WARN 기준을 추가한다. 검출 불가 항목은 `N/A`가 아니라 `WARN`으로 사람 확인을 요청한다.

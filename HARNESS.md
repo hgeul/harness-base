@@ -33,7 +33,7 @@
 
 | 파일 | PROJECT 부분 |
 |---|---|
-| `CLAUDE.md` | 커밋 메시지 토큰 / 자동 적용 규칙 import 절 (채널·스택) |
+| `CLAUDE.md` | 커밋 메시지 언어 / 자동 적용 규칙 import 절 (도메인·스택) |
 | `.claude/rules/*.md` | 도메인 규칙. **100% 고유** |
 | `.claude/agents/dod-checker.md` | PROJECT 검증항목 (도메인 검출 명령어) |
 | `.claude/agents/design-grill.md` | 질문 축의 도메인 내용 |

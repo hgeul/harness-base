@@ -32,10 +32,12 @@
 
 ## 커밋 메시지 [PROJECT]
 
-형식: `[<CHANNELS>][<TYPES>] <설명>`
-예: 채널 `관리자|멤버|공통`, 분류 `추가|수정|삭제|테스트|문서`
+`harness/commit-convention.md`를 따른다.
 
-- 토큰은 `.claude/hooks/pre-commit-check.sh` CONFIG 블록과 일치시킬 것.
+형식: `<type>(<scope>): <설명>`
+예: `feat(auth): 로그인 재시도 제한 추가`
+
+- 허용 type은 `.claude/hooks/pre-commit-check.sh` CONFIG 블록과 일치시킬 것.
 - AI 도구 언급·공동저자 트레일러 금지.
 - 설명 언어: `<COMMIT_MESSAGE_LANGUAGE>`. 제품·도구 이름, 코드 식별자, 파일 경로, CLI 명령은 원문을 유지.
 

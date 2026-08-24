@@ -14,8 +14,7 @@
 # ── CONFIG [PROJECT] ──────────────────────────────────────────────
 PROTECTED_BRANCHES="main master develop"   # 직접 커밋 금지 브랜치 (공백 구분)
 # 기본값에 main 을 포함한다. 빠뜨리면 훅이 경고 없이 통과시켜 게이트가 조용히 꺼진다.
-MSG_CHANNELS="관리자|멤버|공통"             # [채널] 토큰
-MSG_TYPES="추가|수정|삭제|테스트|문서"      # [분류] 토큰
+COMMIT_TYPES="feat|fix|docs|refactor|test|build|ci|perf|chore"
 # 체크리스트 본문은 파일 하단 print_checklist() 에서 프로젝트에 맞게 수정.
 # ──────────────────────────────────────────────────────────────────
 
@@ -95,13 +94,14 @@ if [ -n "$commit_msg" ]; then
     exit 2
   fi
 
-  # ── 4b. [채널][분류] prefix 검증 ──
+  # ── 4b. Conventional Commits 형식 검증 ──
   first_line=$(echo "$commit_msg" | head -1)
-  if ! echo "$first_line" | grep -qE "^\[(${MSG_CHANNELS})\]\[(${MSG_TYPES})\][[:space:]]+.+"; then
+  if ! echo "$first_line" | grep -qE "^(${COMMIT_TYPES})(\([^)]+\))?!?:[[:space:]]+.+"; then
     echo "[BLOCKED] 커밋 메시지 형식이 올바르지 않습니다."
     echo ""
     echo "현재 첫 줄: $first_line"
-    echo "필수 형식: [${MSG_CHANNELS}][${MSG_TYPES}] <설명>"
+    echo "필수 형식: <type>(<scope>): <설명>"
+    echo "허용 type: ${COMMIT_TYPES}"
     exit 2
   fi
 fi
@@ -114,7 +114,7 @@ print_checklist() {
   echo "[공통 비협상]"
   echo "  □ TODO / FIXME / dummy 코드 없음"
   echo "  □ 하드코딩된 시크릿/계정/엔드포인트 없음 (env/config)"
-  echo "  □ AI 도구 언급 / Co-Authored-By / 이모지 없음"
+  echo "  □ Conventional Commits 형식 + AI 도구 언급 / Co-Authored-By / 이모지 없음"
   echo ""
   echo "[PROJECT 체크 — 여기를 프로젝트에 맞게 채운다]"
   echo "  □ (예) 신규 외부 호출 → timeout 명시 / 자동 재시도 금지"

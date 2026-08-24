@@ -51,10 +51,10 @@ git log <BASE_BRANCH>..HEAD --pretty=%B | grep -iE 'co-authored-by|🤖|claude|c
 `.claude/` 경로 참조는 정당하므로 제외.
 
 ### C. 커밋 메시지 형식
-모든 커밋이 `[<CHANNELS>][<TYPES>]` prefix 를 따르는지 (훅 CONFIG 와 일치).
+모든 커밋이 Conventional Commits 형식을 따르는지 (`harness/commit-convention.md`, 훅 CONFIG와 일치).
 ```bash
 git log <BASE_BRANCH>..HEAD --pretty=format:'%h %s' \
-  | grep -vE '^[a-f0-9]+ \[(<CHANNELS>)\]\[(<TYPES>)\] '
+  | grep -vE '^[a-f0-9]+ (feat|fix|docs|refactor|test|build|ci|perf|chore)(\([^)]+\))?!?: .+'
 ```
 매치 안 되는 커밋 있으면 **FAIL**.
 
