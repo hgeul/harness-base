@@ -36,6 +36,7 @@
 
 - 토큰은 `.claude/hooks/pre-commit-check.sh` CONFIG 블록과 일치시킬 것.
 - AI 도구 언급·공동저자 트레일러 금지.
+- 설명 언어: `<COMMIT_MESSAGE_LANGUAGE>`. 제품·도구 이름, 코드 식별자, 파일 경로, CLI 명령은 원문을 유지.
 
 ## 코드 작성 시 자동 적용 규칙 [PROJECT overlay]
 

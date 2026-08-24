@@ -24,6 +24,10 @@
 | `docs/policy/README.md` | 정책 위키 운영 규칙 |
 | `.claude/rules/_TEMPLATE.md` | 도메인 규칙 작성 가이드 |
 | `.claude/ssot-index.template.md` | 진실 원천 등록부 템플릿 |
+| `.codex/harness-context.template.md` | Codex 프로젝트 컨텍스트 템플릿 |
+| `.codex/ssot-index.template.md` | Codex 진실 원천 등록부 템플릿 |
+| `.codex/skills/{grill,dod,drift,policy-audit}/` | Codex 검수 Skill 골격 |
+| `.codex/scripts/test-anchors.ps1` | Windows PowerShell Markdown 앵커 검사 |
 | `harness-guide.html` | 이 하네스의 설계 의도 설명서(단일 HTML, 자체 포함). 골격이 바뀌면 같이 고친다 |
 
 ## PROJECT overlay (프로젝트마다 새로 작성 — 고객 자료, 공유 금지)
@@ -52,7 +56,8 @@
    - progress 파일명은 날짜 접두사 필수(정렬=시간순), 작업명 한글 가능, **공백 금지**
    - 한글 파일명을 쓰면 `git config core.quotepath false` 를 저장소에 걸어둔다
 7. `ssot-index.template.md` → `ssot-index.md` 등록부 채우기
-8. 골격(워크플로·출력형식·행동원칙·drift 엔진)은 건드리지 않음
+8. Codex를 쓸 경우 `.codex/*.template.md`를 프로젝트 파일명으로 복사하고 placeholder를 채운다.
+9. 골격(워크플로·출력형식·행동원칙·drift 엔진)은 건드리지 않음
 
 ## 기록 수명주기
 
@@ -95,3 +100,11 @@ progress                 실제로 무엇을 했고 결과가 무엇인가
 - 프로젝트 하네스 이력은 `hz.sh` 평행 git-dir(remote 없음)로 로컬에만.
 - **기계 강제 (관례 아님)**: BASE 의 `.gitignore` 가 `docs/` 를 기본 제외한다(스켈레톤 `_TEMPLATE.md` 만 공유). 그래서 실제 ADR·정책·backlog 는 프로젝트가 공개 repo 여도 커밋되지 않는다. 이식 시 이 규칙을 지우지 말 것. 프로젝트 스택 ignore 는 그 아래에 덧붙인다.
   - 근거: docs/ 비공개가 문서 관례로만 있으면 새 프로젝트(특히 공개 GitHub Pages 블로그)에서 쉽게 유출된다. gitignore 로 못박아 기본값으로 만든다.
+
+### 선택형 공유 문서 모드
+
+프로젝트의 문서가 공개 가능하고 팀이 Git 공유를 명시적으로 결정한 경우에만 [SHARED_DOCS.md](./SHARED_DOCS.md)를 따른다. 기본 `.gitignore`의 `docs/**` 제외 규칙은 유지한다. 공유 모드는 `.gitignore.shared-docs.example`을 검토해 전환하며, 시크릿·개인정보·원본 민감 자료는 어떤 모드에서도 추적하지 않는다.
+
+## 런타임 선택
+
+Claude Code는 `.claude/` 하네스를, Codex는 `.codex/` 하네스를 사용한다. 프로젝트는 필요한 런타임만 채택하거나 두 하네스를 병행할 수 있다. 두 하네스의 공통 목표는 설계 질문(`grill`), 완료 검수(`dod`), SSOT 드리프트(`drift`), 반복 정책 감사(`policy-audit`)다.

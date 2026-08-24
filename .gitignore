@@ -5,6 +5,7 @@
 # docs/ 의 실제 내용(ADR·정책·회의·backlog·progress)은 프로젝트 로컬 전용이다.
 # 공개/공유 remote 로 새면 무대 뒤(익명화 결정·내부 정황)가 노출된다.
 # 그래서 docs/ 는 기본 제외하고, 스켈레톤 템플릿(_TEMPLATE.md)만 공유한다.
+# 문서 공유를 명시적으로 선택하는 프로젝트는 루트 SHARED_DOCS.md를 따른다.
 docs/**
 !docs/**/
 !docs/**/_TEMPLATE.md

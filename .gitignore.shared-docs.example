@@ -1,0 +1,12 @@
+# 선택형 공유 문서 모드
+# .gitignore의 docs/** 기본 제외 블록을 이 규칙으로 교체한 뒤 사용한다.
+
+docs/private/
+docs/reference/private/
+docs/**/*.local.md
+*.local
+.env
+.env.*
+!.env.example
+*.key
+*.pem
