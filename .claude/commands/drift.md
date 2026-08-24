@@ -5,8 +5,10 @@ argument-hint: "[도메인키 | full]"
 
 # /drift — SSOT 드리프트 전체 스윕
 
+공통 판단 기준은 `harness/reviews/drift.md`다. 이 파일은 Claude Code 호출 어댑터다.
+
 `.claude/agents/drift-detector.md` 의 drift-detector 를 **full 모드**로 호출하여,
-`.claude/ssot-index.md` 등록부 전체에 대해 문서가 코드와 어긋났는지 점검한다.
+`harness/ssot-index.md` 등록부 전체에 대해 문서가 코드와 어긋났는지 점검한다.
 (dod 의 `[N]` 항목은 diff 범위만 본다. 이건 전체를 본다.)
 
 대상 인자: $ARGUMENTS
@@ -19,7 +21,7 @@ argument-hint: "[도메인키 | full]"
    ```
    모드: full
    대상: <전체 또는 지정 도메인>
-   .claude/ssot-index.md 를 먼저 Read 하라.
+   harness/ssot-index.md 를 먼저 Read 하라.
    Tier 1(앵커, 스크립트) → Tier 2(주장↔코드 모순, LLM) → Tier 3(만료/신선도) 순.
    marker 블록은 INFO 만. 모든 DRIFT 는 문서·코드 양쪽 인용. 자동 수정 금지.
    ```

@@ -5,6 +5,8 @@ argument-hint: "[브랜치명]"
 
 # /grill — PR 전 설계 캐묻기 (grill-with-docs)
 
+공통 판단 기준은 `harness/reviews/grill.md`다. 이 파일은 Claude Code 호출 어댑터다.
+
 `.claude/agents/design-grill.md` 의 design-grill 서브에이전트를 호출하여,
 현재 브랜치의 변경(커밋+미커밋+untracked)에 대해 **dod-checker(규칙 기계 검출)가
 못 잡는 설계 판단 차원의 질문**을 받는다. 답변은 ADR 로 박제해 의도부채를 막는다.

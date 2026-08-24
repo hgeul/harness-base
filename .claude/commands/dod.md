@@ -4,6 +4,8 @@ description: dod-checker 서브에이전트로 현재 브랜치의 완료 직전
 
 # /dod — Definition of Done 검수
 
+공통 판단 기준은 `harness/reviews/dod.md`다. 이 파일은 Claude Code 호출 어댑터다.
+
 `.claude/agents/dod-checker.md` 의 dod-checker 서브에이전트를 호출하여, 현재 브랜치의
 변경(커밋된 것 + 미커밋 + untracked)을 `<BASE_BRANCH>` 와 비교 검수한다.
 

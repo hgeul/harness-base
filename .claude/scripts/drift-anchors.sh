@@ -22,7 +22,7 @@ if [ "${1:-}" = "--strict" ]; then STRICT=1; shift; fi
 DOC_TARGETS=(
   "CLAUDE.md"
   ".claude/rules"
-  ".claude/ssot-index.md"
+  "harness/ssot-index.md"
   "docs/policy"
   "docs/decisions"
   "docs/feature"
@@ -32,7 +32,7 @@ DOC_TARGETS=(
 # docs/backlog 는 포함한다: "지금 남은 일"이라 앵커가 썩으면 잘못된 작업 지시가 된다.
 # docs/progress 는 일부러 뺀다: 당시 실행 사실의 기록이므로 앵커가 과거를 가리키는 게 정상이고,
 #   넣으면 시간이 갈수록 노이즈만 늘어 Tier1 신호가 죽는다. 이 판단을 되돌리지 말 것.
-#   (근거: HARNESS.md 「기록 수명주기」, .claude/ssot-index.md 「문서 수명주기 지도」)
+#   (근거: HARNESS.md 「기록 수명주기」, harness/ssot-index.md 「문서 수명주기 지도」)
 SRC_EXT="java"          # 앵커 대상 소스 확장자 (예: java, ts, py, go)
 SRC_ROOT="src"          # 소스 검색 루트
 

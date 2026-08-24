@@ -10,7 +10,9 @@
 | 파일 | BASE 부분 |
 |---|---|
 | `CLAUDE.md` | 워크플로 / 검증 우선순위 / 의도·결정 기록 절 |
-| `.claude/commands/grill.md`, `dod.md`, `drift.md` | 호출부 + 실행 절차 |
+| `harness/` | Claude Code·Codex 공통 컨텍스트·SSOT·검수 계약 단일 원천 |
+| `CLAUDE.template.md`, `AGENTS.template.md` | 런타임별 진입 어댑터 |
+| `.claude/commands/grill.md`, `dod.md`, `drift.md`, `policy-audit.md` | Claude Code 호출 어댑터 + 실행 절차 |
 | `.claude/agents/design-grill.md` | 역할·스캔범위·출력형식·행동원칙 골격 |
 | `.claude/agents/dod-checker.md` | 검수 범위·출력형식·행동원칙 + 범용 항목(A/B/C/K/N) |
 | `.claude/agents/drift-detector.md` | 진실기준 원칙·Tier1~3 절차·출력형식 |
@@ -23,10 +25,7 @@
 | `docs/progress/_TEMPLATE.md` | 세션·작업 단위의 실제 결과와 다음 시작점 템플릿 |
 | `docs/policy/README.md` | 정책 위키 운영 규칙 |
 | `.claude/rules/_TEMPLATE.md` | 도메인 규칙 작성 가이드 |
-| `.claude/ssot-index.template.md` | 진실 원천 등록부 템플릿 |
-| `.codex/harness-context.template.md` | Codex 프로젝트 컨텍스트 템플릿 |
-| `.codex/ssot-index.template.md` | Codex 진실 원천 등록부 템플릿 |
-| `.codex/skills/{grill,dod,drift,policy-audit}/` | Codex 검수 Skill 골격 |
+| `.codex/skills/{grill,dod,drift,policy-audit}/` | Codex 검수 Skill 어댑터 |
 | `.codex/scripts/test-anchors.ps1` | Windows PowerShell Markdown 앵커 검사 |
 | `harness-guide.html` | 이 하네스의 설계 의도 설명서(단일 HTML, 자체 포함). 골격이 바뀌면 같이 고친다 |
 
@@ -38,7 +37,7 @@
 | `.claude/rules/*.md` | 도메인 규칙. **100% 고유** |
 | `.claude/agents/dod-checker.md` | PROJECT 검증항목 (도메인 검출 명령어) |
 | `.claude/agents/design-grill.md` | 질문 축의 도메인 내용 |
-| `.claude/ssot-index.md` | 진실 원천 등록부. **100% 고유** |
+| `harness/ssot-index.md` | 진실 원천 등록부. **100% 고유** |
 | `.claude/scripts/drift-anchors.sh` | `DOC_TARGETS` 배열 |
 | `.claude/hooks/pre-commit-check.sh` | CONFIG 블록 (토큰·보호 브랜치) |
 | `docs/**` | 정책·결정·진행기록·작업목록·회의·외부계약. **전부 고객 자료** |
@@ -55,8 +54,8 @@
 6. `docs/backlog/작업목록.md` 와 첫 `docs/progress/YYYY-MM-DD_작업명.md` 를 만들고 진입 문서에서 연결
    - progress 파일명은 날짜 접두사 필수(정렬=시간순), 작업명 한글 가능, **공백 금지**
    - 한글 파일명을 쓰면 `git config core.quotepath false` 를 저장소에 걸어둔다
-7. `ssot-index.template.md` → `ssot-index.md` 등록부 채우기
-8. Codex를 쓸 경우 `.codex/*.template.md`를 프로젝트 파일명으로 복사하고 placeholder를 채운다.
+7. `harness/*.template.md`를 실제 파일로 복사하고 채운다. Codex는 `AGENTS.template.md` → `AGENTS.md`, Claude Code는 `CLAUDE.template.md` → `CLAUDE.md`.
+8. 두 런타임은 같은 `harness/` 공통 계약과 SSOT를 사용한다.
 9. 골격(워크플로·출력형식·행동원칙·drift 엔진)은 건드리지 않음
 
 ## 기록 수명주기
@@ -105,6 +104,6 @@ progress                 실제로 무엇을 했고 결과가 무엇인가
 
 프로젝트의 문서가 공개 가능하고 팀이 Git 공유를 명시적으로 결정한 경우에만 [SHARED_DOCS.md](./SHARED_DOCS.md)를 따른다. 기본 `.gitignore`의 `docs/**` 제외 규칙은 유지한다. 공유 모드는 `.gitignore.shared-docs.example`을 검토해 전환하며, 시크릿·개인정보·원본 민감 자료는 어떤 모드에서도 추적하지 않는다.
 
-## 런타임 선택
+## 런타임 어댑터
 
-Claude Code는 `.claude/` 하네스를, Codex는 `.codex/` 하네스를 사용한다. 프로젝트는 필요한 런타임만 채택하거나 두 하네스를 병행할 수 있다. 두 하네스의 공통 목표는 설계 질문(`grill`), 완료 검수(`dod`), SSOT 드리프트(`drift`), 반복 정책 감사(`policy-audit`)다.
+Claude Code와 Codex는 `harness/`의 같은 컨텍스트·SSOT·검수 계약을 사용한다. `.claude/`와 `.codex/`에는 각 런타임의 호출 형식, 에이전트 등록, 스크립트만 둔다. 공통 판단 기준을 어느 한쪽에 복제하지 않는다.

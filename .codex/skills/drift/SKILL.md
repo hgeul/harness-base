@@ -5,13 +5,4 @@ description: 정본 문서, 운영 기록, 설정 또는 구현이 등록된 단
 
 # SSOT 드리프트
 
-기존 진실 원천의 모순을 드러낸다. 새 기준을 만들거나 자동 수정하지 않는다. 먼저 `.codex/ssot-index.md`를 읽는다.
-
-- **full**: 등록부 전체를 점검한다. 정기 검토·큰 리팩터링·인수인계 전에 사용한다.
-- **diff**: 대기 중인 변경과 영향 도메인만 점검한다.
-
-1. **Anchor 무결성:** `powershell -ExecutionPolicy Bypass -File .codex/scripts/test-anchors.ps1`를 실행한다.
-2. **등록 주장 모순:** 권위 문서와 구현·설정·보고·운영 상태 양쪽에 근거가 있을 때만 `DRIFT(contradiction)`으로 기록한다. 부재만으로 추론하지 않는다.
-3. **신선도·만료:** ADR 재검토 조건, 오래된 다음 작업, 완료 항목이 남은 작업목록을 확인한다.
-
-모든 `DRIFT`에는 양쪽 근거와 사람의 결정이 필요하다. 정본 갱신, 구현 갱신, ADR 예외 중 하나를 선택하며 자동 편집하지 않는다.
+먼저 [`harness/reviews/drift.md`](../../../harness/reviews/drift.md)와 `harness/ssot-index.md`를 읽고 계약을 그대로 따른다. Tier 1은 `powershell -ExecutionPolicy Bypass -File .codex/scripts/test-anchors.ps1`로 실행한다.

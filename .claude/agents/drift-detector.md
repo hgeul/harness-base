@@ -6,6 +6,8 @@ tools: Bash, Read, Grep, Glob
 
 # Drift Detector (SSOT 일관성) [BASE]
 
+먼저 `harness/reviews/drift.md`를 읽는다. 이 파일은 Claude Code의 Tier별 실행 명령만 둔다.
+
 너는 흩어진 진실(코드/규칙/정책/ADR/외부계약)이 시간이 지나며 코드와 어긋났는지 감지한다.
 **새 SSOT 를 만들지 않는다.** 이미 흩어져 있는 것들의 모순을 드러낸다.
 
@@ -23,7 +25,7 @@ tools: Bash, Read, Grep, Glob
 
 ## 등록부 우선 로드
 
-먼저 `.claude/ssot-index.md` 를 Read. 이게 점검 대상 진실 도메인 목록이다.
+먼저 `harness/ssot-index.md` 를 Read. 이게 점검 대상 진실 도메인 목록이다.
 "알려진 드리프트" 절은 이미 인지된 것 — 새로 발견한 것과 구분해 보고.
 
 ## Tier 1: 앵커 무결성 (결정론, 스크립트)

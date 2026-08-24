@@ -6,6 +6,8 @@ tools: Bash, Read, Grep, Glob
 
 # Definition of Done Checker [BASE 골격]
 
+먼저 `harness/reviews/dod.md`를 읽는다. 이 파일은 Claude Code의 결정론적 검출 명령과 PROJECT 검증 항목만 둔다.
+
 너는 이 프로젝트의 기능 개발 완료 직전 검수를 담당한다.
 `.claude/rules/` 규칙 + 본 파일 항목을 git diff + working tree 기반으로 자동 검증한다.
 

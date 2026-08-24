@@ -380,7 +380,7 @@
       <div class="layer" style="--rail: var(--brand);">
         <span class="lnum lwhen">LAYER 2</span>
         <span class="lname">Validation: 완료 직전 검수</span>
-        <span class="ldesc"><code>/grill</code> · <code>/dod</code> · <code>/drift</code> 서브에이전트. 별도 컨텍스트로 캐묻고 검출한다.</span>
+        <span class="ldesc">Claude Code와 Codex는 <code>harness/</code> 공통 계약을 사용한다. 실행 형식만 <code>/grill</code>·<code>$grill</code>처럼 다르다.</span>
         <span class="bypass mid">별도 검수 컨텍스트</span>
       </div>
       <div class="layer" style="--rail: var(--fail);">
@@ -440,7 +440,7 @@
       <p><code>CLAUDE.md</code>와 <code>.claude/rules/*.md</code>가 매 턴 컨텍스트에 자동 주입된다. 파일을 수정하기 <em>전에</em> 규칙을 상기시켜 생성 단계에서 기술부채를 차단하는 것이 목적이다. 강제력은 없다. AI가 무시할 수도 있다. 그래서 아래 두 층이 받친다.</p>
 
       <h3>Layer 2 · Validation: 별도 컨텍스트가 캐묻는다</h3>
-      <p>완료를 선언하기 직전, 세 개의 슬래시 커맨드가 서브에이전트를 띄운다. 메인 작업과 <strong>분리된 검수 컨텍스트</strong>라 스스로에게 관대해지지 않는다. 규칙 위반은 결정론적으로 검출하고(<code>/dod</code>), 설계 판단은 소크라테스식으로 캐묻고(<code>/grill</code>), 문서-코드 괴리는 스윕한다(<code>/drift</code>).</p>
+      <p>완료를 선언하기 전 공통 계약이 검수 컨텍스트를 분리한다. 규칙 위반은 결정론적으로 검출하고(<code>dod</code>), 설계 판단은 소크라테스식으로 캐묻고(<code>grill</code>), 문서-코드 괴리는 스윕하며(<code>drift</code>), 반복 정책은 정기 측정한다(<code>policy-audit</code>). Claude Code는 슬래시 명령, Codex는 Skill 호출을 쓴다.</p>
 
       <h3>Layer 3 · Enforcement: 기계가 거부한다</h3>
       <p>가장 바깥. <code>pre-commit</code> 훅이 커밋 명령을 가로채 <strong>거부(exit 2)</strong>한다. 보호 브랜치 직접 커밋, AI 도구 언급·공동저자 트레일러, 커밋 메시지 형식 위반을 차단한다. 여기에 <code>.gitignore</code>가 개인정보·고객 자료를 애초에 스테이징 불가로 만든다. 사람의 의지가 개입할 여지가 없다.</p>
@@ -609,8 +609,8 @@
             <tr><th>층</th><th>무엇</th><th>공유</th><th>예</th></tr>
           </thead>
           <tbody>
-            <tr><td class="role">BASE</td><td>워크플로 · 출력 형식 · 행동 원칙 · drift 엔진 · 커맨드 골격</td><td><span class="chip pass">push 가능</span></td><td><code>commands/</code>, 에이전트 골격, <code>drift-anchors.sh</code>, 훅 로직</td></tr>
-            <tr><td class="role">Overlay</td><td>도메인 규칙 · 검증 항목 · 질문 축 · SSOT 등록부</td><td><span class="chip fail">공유 금지</span></td><td><code>rules/*.md</code>, <code>ssot-index.md</code>, <code>docs/**</code></td></tr>
+            <tr><td class="role">BASE</td><td>공통 검수 계약 · 워크플로 · 출력 형식 · drift 엔진 · 런타임 어댑터</td><td><span class="chip pass">push 가능</span></td><td><code>harness/</code>, commands, 에이전트 골격, anchor script, 훅</td></tr>
+            <tr><td class="role">Overlay</td><td>도메인 규칙 · 검증 항목 · 질문 축 · SSOT 등록부</td><td><span class="chip fail">공유 금지</span></td><td><code>rules/*.md</code>, <code>harness/ssot-index.md</code>, <code>docs/**</code></td></tr>
           </tbody>
         </table>
       </div>
