@@ -4,6 +4,8 @@
 docs/private/
 docs/reference/private/
 docs/**/*.local.md
+# 공유 문서 모드에서도 절대 추적하지 않는 원본·민감 자료 보관함
+docs/_local/
 *.local
 .env
 .env.*
