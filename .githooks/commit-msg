@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# 모든 Git 클라이언트의 커밋 메시지 게이트.
+set -eu
+
+if [ "$#" -ne 1 ] || [ ! -r "$1" ]; then
+  echo "[BLOCKED] commit-msg hook에 메시지 파일이 없습니다." >&2
+  exit 1
+fi
+
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$hook_dir/config"
+
+message=$(cat "$1")
+first_line=$(printf '%s\n' "$message" | sed -n '1p')
+
+if printf '%s\n' "$message" | LC_ALL=C grep -qiE 'Co-Authored-By:|generated with|🤖|Claude|ChatGPT|Copilot'; then
+  echo "[BLOCKED] 커밋 메시지에 AI 도구 언급 또는 공동저자 트레일러가 있습니다." >&2
+  exit 1
+fi
+
+if ! printf '%s\n' "$first_line" | grep -qE "^(${COMMIT_TYPES})(\\([^)]+\\))?!?:[[:space:]]+.+"; then
+  echo "[BLOCKED] 커밋 메시지 형식이 올바르지 않습니다." >&2
+  echo "필수 형식: <type>(<scope>): <설명>" >&2
+  echo "허용 type: ${COMMIT_TYPES}" >&2
+  exit 1
+fi
