@@ -6,8 +6,8 @@
 
 1. `harness/project-context.template.md`를 `harness/project-context.md`로 복사해 권위 문서와 민감 자료 경계를 채운다.
 2. `harness/ssot-index.template.md`를 `harness/ssot-index.md`로 복사해 현재 진실 원천을 등록한다.
-3. `CLAUDE.template.md`를 `CLAUDE.md`로 복사하고 placeholder를 채운다. Codex 프로젝트는 같은 시작·종료 순서를 `AGENTS.md`에 둔다.
-4. `.claude/rules/`와 각 검수 계약의 `PROJECT` 절만 도메인에 맞게 채운다.
+3. `CLAUDE.template.md`를 `CLAUDE.md`로, `AGENTS.template.md`를 `AGENTS.md`로 복사한다. 두 adapter는 같은 `harness/agent-workflow.md`를 따른다.
+4. `harness/rules/`와 각 검수 계약의 `PROJECT` 절만 도메인에 맞게 채운다.
 
 ## 공통 검수 계약
 

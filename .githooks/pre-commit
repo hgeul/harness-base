@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# 모든 Git 클라이언트의 보호 브랜치 게이트.
+set -eu
+
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$hook_dir/config"
+
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)
+for protected in $PROTECTED_BRANCHES; do
+  if [ "$branch" = "$protected" ]; then
+    echo "[BLOCKED] '$branch' 브랜치에 직접 커밋할 수 없습니다." >&2
+    echo "feature 브랜치를 먼저 생성하세요." >&2
+    exit 1
+  fi
+done

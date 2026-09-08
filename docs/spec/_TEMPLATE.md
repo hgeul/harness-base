@@ -30,4 +30,4 @@
 
 ## 6. 참고
 
-- 기능: `docs/feature/<기능>.md` / 룰: `.claude/rules/<관련>.md`
+- 기능: `docs/feature/<기능>.md` / 룰: `harness/rules/<관련>.md`

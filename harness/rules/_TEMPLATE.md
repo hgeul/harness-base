@@ -1,8 +1,7 @@
 # <도메인> 규칙
 
 > 도메인 규칙은 PROJECT overlay 다. 이 프로젝트에서 "무엇이 옳은가"를 정의한다.
-> dod-checker(결정론 검출)와 design-grill(설계 질문)이 이 파일을 근거로 삼는다.
-> CLAUDE.md 에서 `@.claude/rules/<이파일>.md` 로 import 하면 코딩 중 자동 적용된다.
+> Claude Code와 Codex가 모두 이 파일을 읽는다. runtime 전용 경로에 복제하지 않는다.
 
 ## 적용 대상
 
@@ -10,7 +9,7 @@
 
 ## 규칙 (해야 할 것 / 하면 안 되는 것)
 
-규칙은 **기계가 검출 가능하게** 적을수록 dod-checker 가 강하게 잡는다.
+규칙은 **기계가 검출 가능하게** 적을수록 DoD가 강하게 잡는다.
 
 - (예) 모든 외부 호출에 `.timeout(...)` 명시. 누락 = WARN.
 - (예) 자동 재시도 금지. `.retry(`/재시도 루프 발견 = WARN(멱등성 확인).
@@ -29,5 +28,5 @@
 ## 관련
 
 - 정책: `docs/policy/<...>.md`
-- 검증: dod-checker `[?]` 항목, design-grill 축 N
+- 검증: `harness/reviews/dod.md`
 - 코드 기준점: `path/to/File.ext:line`

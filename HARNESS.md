@@ -9,7 +9,7 @@
 
 | 파일 | BASE 부분 |
 |---|---|
-| `CLAUDE.md` | 워크플로 / 검증 우선순위 / 의도·결정 기록 절 |
+| `harness/agent-workflow.md` | Claude Code·Codex 공통 세션·검수·기록 계약 |
 | `harness/` | Claude Code·Codex 공통 컨텍스트·SSOT·검수 계약 단일 원천 |
 | `CLAUDE.template.md`, `AGENTS.template.md` | 런타임별 진입 어댑터 |
 | `.claude/commands/grill.md`, `dod.md`, `drift.md`, `policy-audit.md` | Claude Code 호출 어댑터 + 실행 절차 |
@@ -18,13 +18,13 @@
 | `.claude/agents/drift-detector.md` | 진실기준 원칙·Tier1~3 절차·출력형식 |
 | `.claude/scripts/drift-anchors.sh` | Tier1 앵커 무결성 (DOC_TARGETS 만 PROJECT) |
 | `.claude/scripts/hz.sh` | 평행 git-dir 래퍼 (완전 범용) |
-| `.claude/hooks/pre-commit-check.sh` | 게이트 로직 (CONFIG 블록 변수만 PROJECT) |
+| `.githooks/` | Claude·Codex·사람 공통 Git 커밋 게이트 (CONFIG만 PROJECT) |
 | `docs/decisions/_TEMPLATE.md` | ADR 템플릿 |
 | `docs/feature/_TEMPLATE.md`, `docs/spec/_TEMPLATE.md` | 결정+이유 템플릿 |
 | `docs/backlog/_TEMPLATE.md` | 결정됐지만 미완료인 작업의 인수인계 템플릿 |
 | `docs/progress/_TEMPLATE.md` | 세션·작업 단위의 실제 결과와 다음 시작점 템플릿 |
 | `docs/policy/README.md` | 정책 위키 운영 규칙 |
-| `.claude/rules/_TEMPLATE.md` | 도메인 규칙 작성 가이드 |
+| `harness/rules/_TEMPLATE.md` | 런타임 중립 도메인 규칙 작성 가이드 |
 | `.codex/skills/{grill,dod,drift,policy-audit}/` | Codex 검수 Skill 어댑터 |
 | `.codex/scripts/test-anchors.ps1` | Windows PowerShell Markdown 앵커 검사 |
 | `harness-guide.html` | 이 하네스의 설계 의도 설명서(단일 HTML, 자체 포함). 골격이 바뀌면 같이 고친다 |
@@ -34,22 +34,21 @@
 | 파일 | PROJECT 부분 |
 |---|---|
 | `CLAUDE.md` | 커밋 메시지 언어 / 자동 적용 규칙 import 절 (도메인·스택) |
-| `.claude/rules/*.md` | 도메인 규칙. **100% 고유** |
+| `harness/rules/*.md` | 도메인 규칙. **100% 고유** |
 | `.claude/agents/dod-checker.md` | PROJECT 검증항목 (도메인 검출 명령어) |
 | `.claude/agents/design-grill.md` | 질문 축의 도메인 내용 |
 | `harness/ssot-index.md` | 진실 원천 등록부. **100% 고유** |
 | `.claude/scripts/drift-anchors.sh` | `DOC_TARGETS` 배열 |
-| `.claude/hooks/pre-commit-check.sh` | CONFIG 블록 (토큰·보호 브랜치) |
+| `.githooks/config` | 보호 브랜치·허용 커밋 type |
 | `docs/**` | 정책·결정·진행기록·작업목록·회의·외부계약. **전부 고객 자료** |
 
 ## 이식 절차
 
 1. BASE 복사
 2. `CLAUDE.template.md` → `CLAUDE.md`, `<...>` placeholder 채우기
-3. 훅 CONFIG 블록 수정 (토큰·보호 브랜치)
-   - 전제: 훅은 JSON 파싱에 `jq` 또는 `python` 중 하나를 쓴다. 둘 다 없으면
-     통과시키지 않고 커밋을 **차단**한다(게이트가 조용히 죽는 것보다 낫다)
-4. `.claude/rules/` 도메인 규칙 작성
+3. `git config core.hooksPath .githooks`로 Git hook을 설치하고 `.githooks/config`의 보호 브랜치·허용 type 수정
+   - 이 설정은 clone마다 필요하다. macOS/Linux에서는 `chmod +x .githooks/pre-commit .githooks/commit-msg`도 실행한다.
+4. `harness/rules/` 도메인 규칙 작성
 5. `dod-checker` PROJECT 검증항목 / `design-grill` 질문 축 작성
 6. `docs/backlog/작업목록.md` 와 첫 `docs/progress/YYYY-MM-DD_작업명.md` 를 만들고 진입 문서에서 연결
    - progress 파일명은 날짜 접두사 필수(정렬=시간순), 작업명 한글 가능, **공백 금지**

@@ -10,7 +10,7 @@
 
 - 트리거: <PR 코멘트 / 운영 이슈 / 외부 스펙 변경 등>
 - 관련 코드: `path/to/File.ext:line`
-- 관련 룰·정책: `.claude/rules/<...>.md`, `docs/policy/<...>.md`
+- 관련 룰·정책: `harness/rules/<...>.md`, `docs/policy/<...>.md`
 
 ## 2. 결정과 근거
 

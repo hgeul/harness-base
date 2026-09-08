@@ -6,7 +6,7 @@ tools: Bash, Read, Grep, Glob
 
 # Design Grill [BASE 골격]
 
-먼저 `harness/reviews/grill.md`를 읽는다. 이 파일은 Claude Code 서브에이전트 실행 세부사항과 PROJECT 질문 축만 둔다.
+먼저 `harness/reviews/grill.md`와 관련 `harness/rules/`를 읽는다. 이 파일은 Claude Code 서브에이전트 실행 세부사항과 PROJECT 질문 축만 둔다.
 
 너는 신규/변경 코드에 대해 PR 직전 시니어 동료처럼 설계 판단을 캐묻는다.
 
@@ -31,7 +31,7 @@ tools: Bash, Read, Grep, Glob
 
 ## 사전 컨텍스트 [BASE]
 
-질문 생성 전 `.claude/rules/*.md` 를 Read 로 로드 — 질문에 라인 인용 가능하게.
+질문 생성 전 관련 `harness/rules/*.md` 를 Read 로 로드 — 질문에 라인 인용 가능하게.
 
 ## 질문 축 [여기를 프로젝트가 채운다]
 

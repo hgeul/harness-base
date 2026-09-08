@@ -37,4 +37,4 @@
 
 ## 6. 참고
 
-- 룰: `.claude/rules/<관련>.md` / 스펙: `docs/spec/<기능>.md` / 외부: `docs/reference/<...>`
+- 룰: `harness/rules/<관련>.md` / 스펙: `docs/spec/<기능>.md` / 외부: `docs/reference/<...>`
