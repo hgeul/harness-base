@@ -40,6 +40,7 @@
 | `harness/ssot-index.md` | 진실 원천 등록부. **100% 고유** |
 | `.claude/scripts/drift-anchors.sh` | `DOC_TARGETS` 배열 |
 | `.githooks/config` | 보호 브랜치·허용 커밋 type |
+| `docs/_local/` | Word·PDF 원본, 사내 중요 문서, 개인정보 자료. **항상 Git 제외** |
 | `docs/**` | 정책·결정·진행기록·작업목록·회의·외부계약. **전부 고객 자료** |
 
 ## 이식 절차
@@ -98,6 +99,7 @@ progress                 실제로 무엇을 했고 결과가 무엇인가
 - 프로젝트 하네스 이력은 `hz.sh` 평행 git-dir(remote 없음)로 로컬에만.
 - **기계 강제 (관례 아님)**: BASE 의 `.gitignore` 가 `docs/` 를 기본 제외한다(스켈레톤 `_TEMPLATE.md` 만 공유). 그래서 실제 ADR·정책·backlog 는 프로젝트가 공개 repo 여도 커밋되지 않는다. 이식 시 이 규칙을 지우지 말 것. 프로젝트 스택 ignore 는 그 아래에 덧붙인다.
   - 근거: docs/ 비공개가 문서 관례로만 있으면 새 프로젝트(특히 공개 GitHub Pages 블로그)에서 쉽게 유출된다. gitignore 로 못박아 기본값으로 만든다.
+  - `docs/_local/`은 Word·PDF 원본, 사내 중요 문서, 개인정보 자료의 전용 보관함이다. 공유 문서 모드에서도 계속 제외한다.
 
 ### 선택형 공유 문서 모드
 

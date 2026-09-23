@@ -27,7 +27,7 @@ AI 하네스 엔지니어링의 **재사용 가능한 BASE(엔진)**. 프로젝�
 1. 이 BASE 를 프로젝트에 복사한다. Claude Code는 `.claude/`, Codex는 `.codex/`를 사용한다. **`.gitignore`도 함께 복사**한다: `docs/`(템플릿 제외)·`*.local`·`.env`를 기본 제외한다. 문서 공유는 [선택형 공유 모드](./SHARED_DOCS.md)를 명시적으로 채택할 때만 전환한다.
 2. `harness/*.template.md`를 실제 파일로 복사하고 채운다. Claude Code는 `CLAUDE.template.md`를 `CLAUDE.md`로, Codex는 `AGENTS.template.md`를 `AGENTS.md`로 복사한다.
 3. `git config core.hooksPath .githooks`로 공통 커밋 게이트를 설치하고 `.githooks/config`의 보호 브랜치·허용 type을 수정. 이 설정은 clone마다 필요하며, macOS/Linux에서는 `chmod +x .githooks/pre-commit .githooks/commit-msg`도 실행.
-4. `harness/rules/`에 도메인 규칙 작성 (이 프로젝트의 "옳은 것"의 정의).
+4. `harness/rules/`에 도메인 규칙 작성 (이 프로젝트의 "옳은 것"의 정의). Word·PDF 원본, 사내 중요 문서, 개인정보 자료는 `docs/_local/`에 둔다. 이 폴더는 항상 Git 제외다.
 5. `.claude/agents/dod-checker.md` 의 PROJECT 검증항목, `design-grill.md` 의 질문 축 작성.
 6. `docs/backlog/_TEMPLATE.md` → `docs/backlog/작업목록.md`, `docs/progress/_TEMPLATE.md` → `docs/progress/YYYY-MM-DD_작업명.md` 로 첫 기록 작성.
    진행기록 파일명은 날짜 접두사 필수(이름순 정렬 = 시간순), 작업명 한글 가능, 공백 금지.
